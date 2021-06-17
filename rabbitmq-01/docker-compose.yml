@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+
+  rabbitmq:
+    container_name: rabbit-1
+    image: rabbitmq:3-management
+    network_mode: host
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=${RABBITMQ_ERLANG_COOKIE}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_DEFAULT_VHOST}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - rabbit-data:/var/lib/rabbitmq/
+      - rabbit-plugin:/opt/rabbitmq/plugins
+volumes:
+  rabbit-data:
+    driver: local
+    driver_opts:
+      type: local
+      o: bind
+      device: $PWD/data
+  rabbit-plugin:
+    driver: local
+    driver_opts:
+      type: local
+      o: bind
+      device: $PWD/plugins
